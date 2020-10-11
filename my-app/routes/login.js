@@ -127,4 +127,21 @@ router.get("/register",function(req, res, next)
     res.render('register');
 });
 
+router.get("/logout",function(req, res, next)
+{
+    try {
+        req.session.destroy(err => {
+            if (err) {
+                return res.redirect('home')
+            }
+            res.clearCookie('adminData')
+            return res.redirect('/user/login');
+        })
+    } catch (e) {
+        res.status(500).send(e)
+    }
+   
+});
+
+
 module.exports = router;
