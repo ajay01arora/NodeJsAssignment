@@ -7,7 +7,7 @@ const User=require('../models/user')
 
 
 const auth=async(req,res)=>{
-    if(!req.session.userData && ! req.session.userData._id){
+    if(!req.session.userID ){
         return res.render('login')
     }
 }

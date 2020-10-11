@@ -4,6 +4,7 @@ const passport = require('passport');
 const session = require('express-session')
 const bcrypt=require('bcrypt')
 const User=require('../models/user')
+const {loginValidation,registerValidation}=require('../validations/commonValidation')
 
 // router.use(session({
 //     name: 'userdata',
@@ -61,7 +62,7 @@ router.get("/login",async(req, res, next)=>{
 });
 
 
-router.post("/login",async(req, res, next)=>{
+router.post("/login",loginValidation,async(req, res, next)=>{
     try {
         const {body,session}=req
         console.log({body,session})
@@ -105,9 +106,11 @@ if(user.user_role=="Manager"){
 
 
 /* Register a new user */
-router.post('/register', async function(req, res, next) 
+router.post('/register',registerValidation, async function(req, res, next) 
 {
-  const user = new User(req.body);
+    const {full_name,username,password,user_role}=req.body
+    const userObj={full_name,username,password,user_role}
+  const user = new User(userObj);
   await user.setHashedPassword();
   user.save((err, saveduser) => {
     if(err)
