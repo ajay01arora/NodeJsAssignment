@@ -2,7 +2,7 @@
 <html>
   <head>
     <title></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/static/stylesheets/style.css' />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   </head>
   <body>
@@ -11,18 +11,23 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Sign in</h1>
             <div class="account-wall">
+                <p id="message" style="color:red;">
+
+                </p>
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="" /><br><br>
-                <form action="/login" method="POST" class="form-signin">
-                    <input type="text" class="form-control" placeholder="Email" required autofocus><br>
-                    <input type="password" class="form-control" placeholder="Password"  required><br>
+                <form action="/user/login" method="post" id="loginForm" >
+                    <!-- action="/login" method="POST" class="form-signin -->
+                    <input type="text" class="form-control" name="username" placeholder="Username" required autofocus><br>
+                    <input type="password" class="form-control"  name="password" placeholder="Password"  required><br>
                     <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" /> <br>
                 </form>
             </div>
             <br>
-            <a href="/register" ><button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button></a>
+            <a href="/user/register" ><button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button></a>
         </div>
     </div>
 </div>
 </body>
+<script defer src="/static/js/login.js"></script>
 </html>

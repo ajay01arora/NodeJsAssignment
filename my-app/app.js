@@ -10,6 +10,8 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const OpeningRouter = require('./routes/openingList');
 const CreateOrUpdateRouter = require('./routes/createOrUpdateOpening');
+const employeeRouter=require('./routes/employee')
+const managerRouter=require('./routes/manager')
 const auth = require('./middleware/auth');
 
 require('./config/passport');
@@ -30,20 +32,36 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+
+const publicDirectoryPath = path.join(__dirname, 'public')
+app.use('/static', express.static(publicDirectoryPath))
+
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret : 'secret',
-  key: 'session_key',
-  cookie:{httpOnly: false},
-  resave: true,
-  saveUninitialized : true
+  name: 'userdata',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'my_secret',
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // one day 24 hours
+      sameSite: true,
+      secure: false,
+  }
+  // secret : 'secret',
+  // key: 'session_key',
+  // cookie:{httpOnly: false},
+  // resave: true,
+  // saveUninitialized : true
 }))
 
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
+app.use('/user', loginRouter);
 app.use('/register', registerRouter);
+app.use('/employee', employeeRouter);
+app.use('/manager', managerRouter);
 app.use('/open', OpeningRouter);
 app.use('/createOrUpdate', CreateOrUpdateRouter);
 

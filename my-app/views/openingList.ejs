@@ -2,7 +2,7 @@
 <html>
   <head>
     <title></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/static/stylesheets/style.css' />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   </head>
   <body>
@@ -16,7 +16,7 @@
                 <th>Project Name</th>
                 <th>Technologies</th>
                 <th>Role</th>
-                <th>Created by</th>
+                <!-- <th>Created by</th> -->
                 <th>Action</th>
             </tr>
             </thead>
@@ -25,11 +25,11 @@
             <% openList.forEach(function(open){ %>
             
             <tr>
-                <td><a href="/open/<%= open.id %>" ><%= open.project %> </a></td>
+                <td><a href="/employee/opening/<%= open._id %>" ><%= open.project %> </a></td>
                 <td><%= open.technology %></td>
                 <td><%= open.role %></td>
-                <td><%= open.createdBy %></td>
-                <td><a href="/createOrUpdate/update/<%= open._id %>">Update</a></a></td>
+                <!-- <td> <%= open.createdBy %></td> -->
+                <td><a href="/employee/opening/<%= open._id %>">Update</a></a></td>
             </tr>  
          
             <% }) } %>    
