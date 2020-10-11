@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  </head>
+  <body>
+    <header>
+        <% include ./partials/header %>
+    </header>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Technologies</th>
+                <th>Role</th>
+                <th>Created by</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(openList){ %>
+            <% openList.forEach(function(open){ %>
+            
+            <tr>
+                <td><a href="/open/<%= open.id %>" ><%= open.project %> </a></td>
+                <td><%= open.technology %></td>
+                <td><%= open.role %></td>
+                <td><%= open.createdBy %></td>
+                <td><a href="/createOrUpdate/update/<%= open._id %>">Update</a></a></td>
+            </tr>  
+         
+            <% }) } %>    
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

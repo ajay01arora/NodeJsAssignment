@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  </head>
+  <body>
+    <header>
+        <% include ./partials/header %>
+    </header>
+    <div class="container">
+        <h2>Opening Details</h2>
+        <% if(openDetails) { %>
+        <table class="table table-hover">
+            <tr>
+                <th>Project Name</th>   
+                <td><%= openDetails.project %></td>             
+            </tr>
+            <tr>
+                <th>Client Name</th>   
+                <td><%= openDetails.client %></td>             
+            </tr> 
+            <tr>
+                <th>Technologies</th>   
+                <td><%= openDetails.technology %></td>             
+            </tr>     
+            <tr>
+                <th>Role</th>   
+                <td><%= openDetails.role %></td>             
+            </tr>     
+            <tr>
+                <th>Created by </th>   
+                <td><%= openDetails.createdBy %></td>             
+            </tr> 
+            <tr>
+                <th>Status</th>   
+                <td><%= openDetails.status %></td>             
+            </tr> 
+            <tr>
+                <th>Job Description</th>   
+                <td><%= openDetails.description %></td>             
+            </tr>     
+            </tbody>
+        </table>
+        <% } %>
+    </div>
+</body>
+</html>

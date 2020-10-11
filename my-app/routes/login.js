@@ -1,8 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/',function(req, res, next){
+const passport = require('passport');
+
+/* Login a new user */
+router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
+{
+res.json(req.user.toAuthJson().token);
+});
+
+/* Login a new user */
+router.get("/",function(req, res, next)
+{
     res.render('login');
-})
+});
 
 module.exports = router;

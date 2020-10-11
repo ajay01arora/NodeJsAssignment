@@ -5,9 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
-const OpeningRouter = require('./routes/opening_list');
+const registerRouter = require('./routes/register');
+const OpeningRouter = require('./routes/openingList');
+const CreateOrUpdateRouter = require('./routes/createOrUpdateOpening');
 const auth = require('./middleware/auth');
 
 require('./config/passport');
@@ -16,7 +17,7 @@ require('./config/passport');
 const app = express();
 
 const db = require('./databases/db');
-db.connectToDb("mongodb+srv://ajay01arora:Rohit@2020@cluster0.swzo0.mongodb.net/portal?retryWrites=true&w=majority");
+db.connectToDb("mongodb+srv://test:test123@cluster0-d4nax.mongodb.net/testing?retryWrites=true&w=majority");
 
 
 
@@ -33,8 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
-app.use('/users', usersRouter);
-app.use('/open',auth.isAuthenticated(), OpeningRouter);
+app.use('/register', registerRouter);
+app.use('/open', OpeningRouter);
+app.use('/createOrUpdate', CreateOrUpdateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

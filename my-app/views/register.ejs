@@ -13,14 +13,17 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="" /><br><br>
-                <form action="/login" method="POST" class="form-signin">
+                <form action="/register" method="POST" class="form-signin">
+                    <input type="text" class="form-control" placeholder="Full Name" required autofocus><br>
+                    <input type="file" class="form-control" placeholder="Image"  required><br>
                     <input type="text" class="form-control" placeholder="Email" required autofocus><br>
                     <input type="password" class="form-control" placeholder="Password"  required><br>
-                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" /> <br>
+                    <input type="password" class="form-control" placeholder="Confirm Password"  required><br>
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register" /> <br>
                 </form>
             </div>
             <br>
-            <a href="/register" ><button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button></a>
+            <a href="/login"><button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button></a>
         </div>
     </div>
 </div>

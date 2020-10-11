@@ -1,11 +1,10 @@
 var express = require('express');
-const passport = require('passport');
 var router = express.Router();
 
 const User = require('../models/user');
 
 /* Register a new user */
-router.post('/register', async function(req, res, next) 
+router.post('/', async function(req, res, next) 
 {
   const user = new User(req.body);
   await user.setHashedPassword();
@@ -18,10 +17,12 @@ router.post('/register', async function(req, res, next)
   
 });
 
-/* Login a new user */
-router.post("/login", passport.authenticate('local',{ session : false}),function(req, res, next)
+/* Register a new user */
+router.get("/",function(req, res, next)
 {
-  res.json(req.user.toAuthJson());
+    res.render('register');
 });
+
+
 
 module.exports = router;
