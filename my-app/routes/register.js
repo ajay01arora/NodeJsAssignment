@@ -8,10 +8,10 @@ router.post('/', async function(req, res, next)
 {
   const user = new User(req.body);
   await user.setHashedPassword();
-
   user.save((err, saveduser) => {
     if(err)
     console.log("Error while creating a user "+ err);
+
     res.json(saveduser);
   });
   

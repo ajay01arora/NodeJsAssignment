@@ -7,8 +7,11 @@ const jwtSecret = "MY_Secret-Key";
 const saltRounds = process.env.SALT_ROUNDS || 10;
 
 const userSchema =new schema({
+    full_name : String,
     username : String,
-    password: String
+    password: String,
+    token : String,
+    user_role : String    
 })
 
 userSchema.methods.setHashedPassword = async function () {
@@ -37,10 +40,12 @@ userSchema.methods.generateJwtToken = function () {
   };
   
   userSchema.methods.toAuthJson = function () {
+    var temp_token =this.generateJwtToken();
+    this.token =temp_token;
     return {
       username: this.username,
       _id: this._id,
-      token: this.generateJwtToken(),
+      token: temp_token,
     };
   };
   

@@ -6,7 +6,8 @@ const passport = require('passport');
 /* Login a new user */
 router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
 {
-res.json(req.user.toAuthJson().token);
+    req.session.name = req.user.username;
+    res.json(req.user.toAuthJson());
 });
 
 /* Login a new user */
