@@ -7,7 +7,7 @@ const Open = require('../models/opening');
 router.get("/",function(req, res, next)
 {
     res.render('createOrUpdateOpening', {
-        openingForUpdate : {},
+        openingForUpdate : {'createdBy' : req.session.user.full_name},
         message : "Create an opening",
     });  
 });
@@ -39,7 +39,7 @@ router.post("/", function(req, res, next)
 router.get("/create",function(req, res, next)
 {
     res.render('createOrUpdateOpening', {
-        openingForUpdate : {},
+        openingForUpdate : {'createdBy' : req.session.user.full_name},
         message : "Create an opening",
     });    
 });

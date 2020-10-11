@@ -49,7 +49,7 @@ const redirectManager = (req, res, next) => {
 /* Login a new user */
 router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
 {
-    req.session.name = req.user.username;
+    req.session.user = req.user;
     res.json(req.user.toAuthJson());
 });
 
