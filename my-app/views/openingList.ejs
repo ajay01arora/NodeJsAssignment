@@ -16,22 +16,24 @@
                 <th>Project Name</th>
                 <th>Technologies</th>
                 <th>Role</th>
-                <!-- <th>Created by</th> -->
+                <th>Status</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <% if(openList){ %>
             <% openList.forEach(function(open){ %>
-            
             <tr>
-                <td><a href="/employee/opening/<%= open._id %>" ><%= open.project %> </a></td>
+                <td><a href="/openingList/opening/<%= open._id %>" ><%= open.project %> </a></td>
                 <td><%= open.technology %></td>
                 <td><%= open.role %></td>
-                <!-- <td> <%= open.createdBy %></td> -->
-                <td><a href="/employee/opening/<%= open._id %>">Update</a></a></td>
-            </tr>  
-         
+                <td><%= open.status %></td>
+                <% if (userData.user_role == "Manager" && open.createdBy == userData._id) { %>
+                <td><a href="/createOrUpdate/update/<%= open._id %>">Update</a></a></td>
+                <% }else { %>
+                <td><a href="/openingList/opening/<%= open._id %>">More Details</a> 
+                <% }%>
+            </tr>           
             <% }) } %>    
             </tbody>
         </table>

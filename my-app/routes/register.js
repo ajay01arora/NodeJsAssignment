@@ -11,8 +11,10 @@ router.post('/', async function(req, res, next)
   user.save((err, saveduser) => {
     if(err)
     console.log("Error while creating a user "+ err);
+    req.session.userID = saveduser._id
+    req.session.userData=saveduser
+    return res.redirect('/openingList/dashboard');
 
-    res.json(saveduser);
   });
   
 });

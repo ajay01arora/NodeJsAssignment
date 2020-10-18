@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
- res.redirect('/user/login')
+ res.redirect('/login')
 });
 
 module.exports = router;

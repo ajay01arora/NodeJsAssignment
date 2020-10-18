@@ -3,6 +3,7 @@ var router = express.Router();
 const passport = require('passport');
 const session = require('express-session')
 const bcrypt=require('bcrypt')
+
 const User=require('../models/user')
 const {loginValidation,registerValidation}=require('../validations/commonValidation')
 
@@ -50,82 +51,43 @@ const redirectManager = (req, res, next) => {
 /* Login a new user */
 router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
 {
-    req.session.user = req.user;
-    res.json(req.user.toAuthJson());
+    req.user.toAuthJson();
+    req.session.userID = req.user._id
+    req.session.userData=req.user;
+    return res.redirect('/openingList/dashboard');
 });
 
 /* Login a new user */
-router.get("/login",async(req, res, next)=>{
-  
-
-    res.render('login');
+router.get("/",async(req, res, next)=>{
+      res.render('login');
 });
 
 
-router.post("/login",loginValidation,async(req, res, next)=>{
-    try {
-        const {body,session}=req
-        console.log({body,session})
-const user=await User.findOne({username:body.username})
-// console.log({user})
-if(!user){
-    return res.status(400).send({message:"No user with this username Exist"})
-}
-const isMatch = await bcrypt.compareSync(body.password, user.password)
-// console.log({isMatch})
-// if (!isMatch) {
-//     return res.status(400).send({ message: 'Password did not match' })
+// router.post("/login",loginValidation,async(req, res, next)=>{
+//     try {
+//         const er = await User.find({},{});
+//         const {body,session}=req
+//         console.log({body,session})
+// const user=await User.findOne({username:body.username})
+// if(!user){
+//     return res.status(400).send({message:"No user with this username Exist"})
 // }
-
-const token=await user.generateJwtToken()
-// console.log({token})
-req.session.userID = user._id
-req.session.userData=user
-
-if(user.user_role=="Manager"){
-    // return res.render("openingList",{token})
-    return res.redirect('/manager/dashboard');
-}else{
-    return res.redirect('/employee/dashboard');
-    // return res.render("openingList",{openList:[],token})
-
-    // return res.redirect('/employee/dashboard');
-}
-// return res.status(200).send({
-//     user,
-//     token,
-//     success: true
-} catch (error) {
-// })
-        console.log(error)
-    }
+// const isMatch = await bcrypt.compareSync(body.password, user.password)
+// const token=await user.generateJwtToken()
+// if(isMatch)
+// {
+// req.session.userID = user._id
+// req.session.userData=user
+// return res.redirect('/openingList/dashboard');
+// }
+// } catch (error)
+//  {
+//         console.log(error)
+//     }
    
 
-    // res.render('login');
-});
-
-
-/* Register a new user */
-router.post('/register',registerValidation, async function(req, res, next) 
-{
-    const {full_name,username,password,user_role}=req.body
-    const userObj={full_name,username,password,user_role}
-  const user = new User(userObj);
-  await user.setHashedPassword();
-  user.save((err, saveduser) => {
-    if(err)
-    console.log("Error while creating a user "+ err);
-
-    res.json(saveduser);
-  });
-  
-});
-
-/* Register a new user */
-router.get("/register",function(req, res, next)
-{
-    res.render('register');
-});
+   
+// });
 
 router.get("/logout",function(req, res, next)
 {
@@ -135,7 +97,7 @@ router.get("/logout",function(req, res, next)
                 return res.redirect('home')
             }
             res.clearCookie('adminData')
-            return res.redirect('/user/login');
+            return res.redirect('/login');
         })
     } catch (e) {
         res.status(500).send(e)

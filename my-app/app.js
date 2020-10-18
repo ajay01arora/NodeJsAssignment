@@ -4,14 +4,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const mongoose=require('mongoose')
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const OpeningRouter = require('./routes/openingList');
 const CreateOrUpdateRouter = require('./routes/createOrUpdateOpening');
-const employeeRouter=require('./routes/employee')
-const managerRouter=require('./routes/manager')
 const auth = require('./middleware/auth');
 
 require('./config/passport');
@@ -49,26 +48,19 @@ app.use(session({
       sameSite: true,
       secure: false,
   }
-  // secret : 'secret',
-  // key: 'session_key',
-  // cookie:{httpOnly: false},
-  // resave: true,
-  // saveUninitialized : true
 }))
 
-
 app.use('/', indexRouter);
-app.use('/user', loginRouter);
+app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-app.use('/employee', employeeRouter);
-app.use('/manager', managerRouter);
-app.use('/open', OpeningRouter);
+app.use('/openingList', OpeningRouter);
 app.use('/createOrUpdate', CreateOrUpdateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

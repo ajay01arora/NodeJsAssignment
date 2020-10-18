@@ -1,4 +1,5 @@
 var express = require('express');
+const { update } = require('../models/opening');
 var router = express.Router();
 
 const Open = require('../models/opening');
@@ -18,18 +19,21 @@ router.post("/", function(req, res, next)
     {
         Open.updateOne({'_id' : req.body._id },req.body,(err, savedOpening) => {
             if(err)
-            console.log("Error while creating opening "+ err);
-            
-            res.redirect('/open');
+            console.log("Error while creating opening "+ err);   
+
+            return res.redirect('/openingList/dashboard');         
         })
     }else
     {
-        open = new Open(req.body);
-        open._id = Math.random().toString(36).substring(2, 6);
-        open.save((err, savedOpening) => {
+        var newOpening = req.body;
+        newOpening.createdBy = req.session.userData._id;
+        open = new Open(newOpening);
+         open.save((err, savedOpening) => {
             if(err)
             console.log("Error while creating opening "+ err);
-            res.redirect('/open');
+            console.log(savedOpening);
+            return res.redirect('/openingList/dashboard');
+
         })        
     }    
     
@@ -39,8 +43,9 @@ router.post("/", function(req, res, next)
 router.get("/create",function(req, res, next)
 {
     res.render('createOrUpdateOpening', {
-        openingForUpdate : {'createdBy' : req.session.user.full_name},
+        openingForUpdate : {'createdBy' : 'Ajay'},
         message : "Create an opening",
+        isUpdate : false
     });    
 });
 
@@ -52,6 +57,7 @@ router.get("/update/:id",function(req, res, next)
         
         res.render('createOrUpdateOpening',{
             openingForUpdate : item,
+            isUpdate:  true,
             message : "Update an opening",
         });
     })

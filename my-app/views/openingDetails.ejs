@@ -41,15 +41,19 @@
                 <th>Job Description</th>   
                 <td><%= openDetails.description %></td>             
             </tr>  
+            <% if (userData.user_role == "Employee" && openDetails.status == "Open") { %>
+            <tr>
             <% if (applied) { %>
                 <th>Application Status</th>   
                 <td>Already Applied</td>  
              <% } else { %>
                 <th>Application Status</th>   
                 <td>
-                    <a href="/employee/opening/apply/<%=openDetails._id%>">Click to Apply </a>
+                    <a href="/openingList/apply/<%=openDetails._id%>">Click to Apply </a>
                 </td>  
              <% } %>
+            </tr>
+            <% } %>
             </tbody>
         </table>
         <% } %>

@@ -8,7 +8,7 @@ function loginSubmit(event) {
     let {password,username}=event.target
     console.log({target:event.target},username.value,password.value)
 
-    fetch(`${window.location.origin}/user/login`, { headers: {
+    fetch(`${window.location.origin}/login`, { headers: {
         'Content-Type': 'application/json',
     },
     method:"POST",
