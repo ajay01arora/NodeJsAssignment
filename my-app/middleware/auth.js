@@ -12,7 +12,7 @@ const User = require('../models/user')
 async function isAuthenticated(req, res, next){
   if(req.session.userData)
   {
-      console.log("app.js")
+      // console.log("app.js")
       let userObjectId=mongoose.Types.ObjectId(req.session.userID)
       const isValid =await User.findOne({_id:userObjectId,  token: req.session.userData.token});
       if(isValid)
@@ -20,7 +20,8 @@ async function isAuthenticated(req, res, next){
         next()
       }      
   }
-  next()  
+  return res.render('login',{message:"Not authorised"})
+  // next()  
 }
 
 module.exports = {

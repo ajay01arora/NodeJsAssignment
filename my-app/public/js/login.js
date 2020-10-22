@@ -6,7 +6,7 @@ function loginSubmit(event) {
     event.preventDefault();
     elem?elem.innerHTML="Logging in ...":""
     let {password,username}=event.target
-    console.log({target:event.target},username.value,password.value)
+    // console.log({target:event.target},username.value,password.value)
 
     fetch(`${window.location.origin}/login`, { headers: {
         'Content-Type': 'application/json',
@@ -17,13 +17,14 @@ function loginSubmit(event) {
     )
     .then(async res =>{
         const data=await res.json()
-        console.log({res,data})
+         console.log({res,data})
         if(res.status===200){
-elem?elem.innerHTML="":""
-            // Swal.fire('Success!','Login Success','success')
-            // setTimeout(() => { 
-            //     // window.location.href=res.url
-            // }, 1500);
+        elem?elem.innerHTML="":""
+          
+        localStorage.setItem('userDetail',JSON.stringify(data.user))
+        localStorage.setItem('loggedIn',true)
+                 window.location.href=data.redirectTo
+          
         }else {
             elem?elem.innerHTML=data.message:""
         }
@@ -37,5 +38,5 @@ elem?elem.innerHTML="":""
   }
   
   const form = document.getElementById('loginForm');
-//   const log = document.getElementById('log');
-//   form.addEventListener('submit', loginSubmit);
+  const log = document.getElementById('log');
+  form.addEventListener('submit', loginSubmit);

@@ -3,9 +3,15 @@ var router = express.Router();
 const mongoose=require('mongoose')
 
 const open = require('../models/opening');
+var ably = new require('ably').Realtime('YxamlA.Va0Qtw:uyPGF7_BsNwKGb0R')
+var channel = ably.channels.get('project');
+
+// Publish a message to the pot-row channel
+
 
 const auth=async(req,res,next)=>{
     try {
+        console.log({session:req.session})
         if(!req.session.userID){
             return res.redirect('/login')        
         }else
@@ -66,12 +72,17 @@ router.get('/apply/:id',async(req,res)=>{
             return res.status(400).send({message:"No Opening found"})
         }
 
-        if(opening=="Close"){
+        if(opening.status=="Close"){
             return res.status(400).send({message:"Opening is now closed"})
         }
 
         let userObjectId=mongoose.Types.ObjectId(req.session.userID)
     const applied=await open.findOne({_id:objectId,  appliedBy: { $in: [userObjectId] }})
+
+    /*** */
+    channel.publish('appliedToJob', {message:`An application has been sent by ${req.session.userData.full_name} for project ${opening.project} for role  ${opening.role}`,opening});
+
+        /****/
     if(applied){
         return res.redirect(`/openingList/opening/${req.params.id}`);  
     }  
@@ -82,7 +93,7 @@ router.get('/apply/:id',async(req,res)=>{
     { $addToSet: { appliedBy: userObjectId } },
     { returnNewDocument: true }
   );
-  console.log("db==", update);
+//   console.log("db==", update);
   return res.redirect(`/openingList/opening/${req.params.id}`);    
 
     } catch (error) {

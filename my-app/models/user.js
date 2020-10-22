@@ -21,7 +21,7 @@ userSchema.methods.setHashedPassword = async function () {
   };
   
 userSchema.methods.validatePassword = async function (password) {
-  console.log({password},this.password)
+  // console.log({password},this.password)
 const pwdMatches = await bcrypt.compare(password, this.password);
 return pwdMatches;
 };
@@ -31,7 +31,7 @@ userSchema.methods.generateJwtToken = async function () {
     const expirationDate = new Date(today);
     expirationDate.setDate(today.getDate() + 1);
     user=this
-    console.log({user})
+    // console.log({user})
     const token=await jwt.sign(
       {
         id: this._id,

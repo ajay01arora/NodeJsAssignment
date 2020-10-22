@@ -5,6 +5,13 @@ const session = require('express-session')
 const bcrypt=require('bcrypt')
 
 const User=require('../models/user')
+const EventEmitter =require('events');
+const eventEmitter = new EventEmitter();
+
+const socketApi=require('../socketApi')
+
+var ably = new require('ably').Realtime('YxamlA.Va0Qtw:uyPGF7_BsNwKGb0R')
+var channel = ably.channels.get('project');
 const {loginValidation,registerValidation}=require('../validations/commonValidation')
 
 // router.use(session({
@@ -19,7 +26,11 @@ const {loginValidation,registerValidation}=require('../validations/commonValidat
 //     }
 // }))
 
-
+eventEmitter.on('appliedToJob', () => {
+    console.log('Applied to the job notification1111111111111111111')
+    // alert("Applied to the job notification")
+    // console.log('Listener 1');
+});
 
 const redirectLogin = (req, res, next) => {
     if (!req.session.userID) {
@@ -49,13 +60,22 @@ const redirectManager = (req, res, next) => {
 
 
 /* Login a new user */
-router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
-{
-    req.user.toAuthJson();
-    req.session.userID = req.user._id
-    req.session.userData=req.user;
-    return res.redirect('/openingList/dashboard');
-});
+// router.post("/", passport.authenticate('local',{ session : false}),function(req, res, next)
+// {
+//     try {
+        
+//         req.user.toAuthJson();
+//         req.session.userID = req.user._id
+//         req.session.userData=req.user;
+//         // socketApi.sendNotification(req.session.userData)
+//         // io.sockets.emit('appliedToJob',{loggedInUser:true,alert:true});
+//         channel.publish('appliedToJob', {message:"An application has been sent for your opening post",data:"An application has been sent for your opening post"});
+//         return res.redirect('/openingList/dashboard');
+//     } catch (error) {
+//      console.log({error});
+        
+//     }
+// });
 
 /* Login a new user */
 router.get("/",async(req, res, next)=>{
@@ -63,31 +83,37 @@ router.get("/",async(req, res, next)=>{
 });
 
 
-// router.post("/login",loginValidation,async(req, res, next)=>{
-//     try {
-//         const er = await User.find({},{});
-//         const {body,session}=req
-//         console.log({body,session})
-// const user=await User.findOne({username:body.username})
-// if(!user){
-//     return res.status(400).send({message:"No user with this username Exist"})
-// }
-// const isMatch = await bcrypt.compareSync(body.password, user.password)
-// const token=await user.generateJwtToken()
-// if(isMatch)
-// {
-// req.session.userID = user._id
-// req.session.userData=user
-// return res.redirect('/openingList/dashboard');
-// }
-// } catch (error)
-//  {
-//         console.log(error)
-//     }
+router.post("/",loginValidation,async(req, res, next)=>{
+    try {
+        const er = await User.find({},{});
+        const {body,session}=req
+        console.log({body,session})
+const user=await User.findOne({username:body.username})
+if(!user){
+    return res.status(400).send({message:"No user with this username Exist"})
+}
+const isMatch = await bcrypt.compareSync(body.password, user.password)
+if(!isMatch){
+    
+}
+const token=await user.generateJwtToken()
+if(isMatch)
+{
+req.session.userID = user._id
+req.session.userData=user
+req.session.token=token
+console.log(req.headers)
+return res.status(200).send({redirectTo: `${req.headers.origin}/openingList/dashboard`,user:user});
+}
+} catch (error)
+ {
+        console.log({error})
+        return res.status(400).send({error})
+    }
    
 
    
-// });
+ });
 
 router.get("/logout",function(req, res, next)
 {
@@ -106,4 +132,4 @@ router.get("/logout",function(req, res, next)
 });
 
 
-module.exports = router;
+module.exports = router

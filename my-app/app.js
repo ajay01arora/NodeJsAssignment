@@ -12,6 +12,14 @@ const registerRouter = require('./routes/register');
 const OpeningRouter = require('./routes/openingList');
 const CreateOrUpdateRouter = require('./routes/createOrUpdateOpening');
 const auth = require('./middleware/auth');
+var socket_io    = require( "socket.io" );
+
+
+
+// const socketIO = require('socket.io');
+// const server = require('http').createServer();
+// server.listen(8000);
+
 
 require('./config/passport');
 
@@ -44,7 +52,7 @@ app.use(session({
   saveUninitialized: false,
   secret: 'my_secret',
   cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // one day 24 hours
+      maxAge: 1000 * 60 * 60 * 1, // one hour
       sameSite: true,
       secure: false,
   }
@@ -73,4 +81,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// module.exports = socketIO(server);
+
+module.exports = app

@@ -19,7 +19,7 @@ router.post("/", function(req, res, next)
     {
         Open.updateOne({'_id' : req.body._id },req.body,(err, savedOpening) => {
             if(err)
-            console.log("Error while creating opening "+ err);   
+            // console.log("Error while creating opening "+ err);   
 
             return res.redirect('/openingList/dashboard');         
         })
@@ -31,7 +31,7 @@ router.post("/", function(req, res, next)
          open.save((err, savedOpening) => {
             if(err)
             console.log("Error while creating opening "+ err);
-            console.log(savedOpening);
+            // console.log(savedOpening);
             return res.redirect('/openingList/dashboard');
 
         })        
